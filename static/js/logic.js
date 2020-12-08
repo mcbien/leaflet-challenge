@@ -7,9 +7,11 @@ d3.json(queryUrl, function (data) {
     // Once we get a response, create a geoJSON layer containing the features array and add a popup for each marker
     // then, send the layer to the createMap() function.
     var earthquakes = L.geoJSON(data.features, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, getMarkerOptions(feature));
+        },
         onEachFeature: addPopup
     });
-
     createMap(earthquakes);
 });
 
