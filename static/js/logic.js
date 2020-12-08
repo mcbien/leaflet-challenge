@@ -15,6 +15,19 @@ d3.json(queryUrl, function (data) {
     createMap(earthquakes);
 });
 
+function getMarkerOptions(feature) {
+    var geojsonMarkerOptions = {
+        radius: feature.properties.mag * 7,
+        // radius: 8,
+        fillColor: "#FF3E00",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        // set opacity 
+        fillOpacity: feature.geometry.coordinates[2] * 0.2
+    };
+    return geojsonMarkerOptions;
+}
 
 // Define a function we want to run once for each feature in the features array
 function addPopup(feature, layer) {
