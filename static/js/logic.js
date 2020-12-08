@@ -64,6 +64,28 @@ function createMap(earthquakes) {
     // Create overlay object to hold our overlay layer
     var overlayMaps = {
         "Earthquakes": earthquakes
+
+    }
+
+    // Create cloropleth layer
+    var cloroplethLayer = {
+        // Define what  property in the features to use
+        valueProperty: "mag",
+
+        // Set color scale
+        scale: ["#ffffb2", "#b10026"],
+
+        // Number of breaks in step range
+        steps: 5,
+
+        // q for quartile, e for equidistant, k for k-means
+        mode: "q",
+        style: {
+            // Border color
+            color: "#fff",
+            weight: 1,
+            fillOpacity: 0.8
+        }
     };
 
     // Create our map, giving it the streetmap and earthquakes layers to display on load
@@ -79,4 +101,12 @@ function createMap(earthquakes) {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(myMap);
+
+
+
+
+
+
+
+
 }
