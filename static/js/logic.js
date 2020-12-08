@@ -1,6 +1,7 @@
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-11-16&endtime=" +
     "2020-11-17&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
+console.log(queryUrl)
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function (data) {
@@ -32,7 +33,10 @@ function getMarkerOptions(feature) {
 // Define a function we want to run once for each feature in the features array
 function addPopup(feature, layer) {
     // Give each feature a popup describing the place and time of the earthquake
-    return layer.bindPopup(`<h3> ${feature.properties.place} </h3> <hr> <p> ${Date(feature.properties.time)} </p>`);
+    return layer.bindPopup(`<h3> Location: ${feature.properties.place} </h3> <hr> 
+                            <p> Date & Time: ${Date(feature.properties.time)} </p>
+                            <p> Type: ${feature.properties.type} </p>
+                            <p> Magnitude: ${feature.geometry.coordinates[2]}`);
 }
 
 // function to receive a layer of markers and plot them on a map.
