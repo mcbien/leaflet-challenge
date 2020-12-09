@@ -1,6 +1,5 @@
 // Store our API endpoint inside queryUrl
-var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-11-16&endtime=" +
-    "2020-11-17&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
+var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 console.log(queryUrl)
 
 // Perform a GET request to the query URL
@@ -18,14 +17,14 @@ d3.json(queryUrl, function (data) {
 
 function getMarkerOptions(feature) {
     var geojsonMarkerOptions = {
-        radius: feature.properties.mag * 7,
+        radius: feature.properties.mag,
         // radius: 8,
         fillColor: "#FF3E00",
         color: "#000",
         weight: 1,
         opacity: 1,
         // set opacity 
-        fillOpacity: feature.geometry.coordinates[2] * 0.2
+        fillOpacity: feature.geometry.coordinates[2] * 0.1
     };
     return geojsonMarkerOptions;
 }
@@ -44,13 +43,13 @@ function createMap(earthquakes) {
 
     // Define streetmap and darkmap layers
     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        maxZoom: 18,
+        maxZoom: 5,
         id: "streets-v11",
         accessToken: API_KEY
     });
 
     var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        maxZoom: 18,
+        maxZoom: 5,
         id: "dark-v10",
         accessToken: API_KEY
     });
@@ -65,34 +64,13 @@ function createMap(earthquakes) {
     var overlayMaps = {
         "Earthquakes": earthquakes
 
-    }
-
-    // Create cloropleth layer
-    var cloroplethLayer = {
-        // Define what  property in the features to use
-        valueProperty: "mag",
-
-        // Set color scale
-        scale: ["#ffffb2", "#b10026"],
-
-        // Number of breaks in step range
-        steps: 5,
-
-        // q for quartile, e for equidistant, k for k-means
-        mode: "q",
-        style: {
-            // Border color
-            color: "#fff",
-            weight: 1,
-            fillOpacity: 0.8
-        }
     };
 
     // Create our map, giving it the streetmap and earthquakes layers to display on load
     var myMap = L.map("mapid", {
         center: [37.09, -95.71],
         zoom: 5,
-        layers: [streetmap, earthquakes]
+        layers: [darkmap, earthquakes]
     });
 
     // Create a layer control
